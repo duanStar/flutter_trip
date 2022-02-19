@@ -5,10 +5,12 @@ import 'package:flutter_trip/model/common_model.dart';
 import 'package:flutter_trip/model/grid_nav_model.dart';
 import 'package:flutter_trip/model/home_model.dart';
 import 'package:flutter_trip/model/sales_box_model.dart';
+import 'package:flutter_trip/pages/search_page.dart';
 import 'package:flutter_trip/widget/grid_nav.dart';
 import 'package:flutter_trip/widget/loading_container.dart';
 import 'package:flutter_trip/widget/local_nav.dart';
 import 'package:flutter_trip/widget/sales_box.dart';
+import 'package:flutter_trip/widget/search_bar.dart';
 import 'package:flutter_trip/widget/sub_nav.dart';
 import 'package:flutter_trip/widget/webview.dart';
 
@@ -107,18 +109,38 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget get _appBar {
-    return Opacity(
-      opacity: appBarAlpha,
-      child: Container(
-        height: 80,
-        decoration: BoxDecoration(color: Colors.white),
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.only(top: 20),
-            child: Text('首页', style: TextStyle(fontSize: 18),),
+    return Column(
+      children: [
+        Container(
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Color(0x66000000), Colors.transparent],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter)),
+          child: Container(
+            padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+            height: 80,
+            decoration: BoxDecoration(
+                color:
+                    Color.fromARGB((appBarAlpha * 255).toInt(), 255, 255, 255)),
+            child: SearchBar(
+                searchBarType: appBarAlpha > 0.2
+                    ? SearchBarType.homeLight
+                    : SearchBarType.home,
+                defaultText: SEARCH_BAR_DEFAULT_TEXT,
+                leftButtonClick: () {},
+                speakClick: _jumpToSpeak,
+                rightButtonClick: () {},
+                inputBoxClick: _jumpToSearch,
+                onChanged: (String text) {}),
           ),
         ),
-      ),
+        Container(
+          height: appBarAlpha > 0.2 ? 0.5 : 0,
+          decoration: BoxDecoration(
+              boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 0.5)]),
+        )
+      ],
     );
   }
 
@@ -177,4 +199,15 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  void _jumpToSearch() {
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+      return const SearchPage(
+        keyword: SEARCH_BAR_DEFAULT_TEXT,
+        hideLeft: false,
+      );
+    }));
+  }
+
+  void _jumpToSpeak() {}
 }
