@@ -8,11 +8,11 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+
     <application>
         <service
             android:name="com.baidu.speech.VoiceRecognitionService"
             android:exported="false" />
-
         <meta-data
             android:name=" com.baidu.speech.APP_ID"
             android:value="25635116" />

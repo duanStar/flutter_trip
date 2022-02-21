@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_trip/dao/search_dao.dart';
 import 'package:flutter_trip/model/search_item.dart';
 import 'package:flutter_trip/model/search_model.dart';
+import 'package:flutter_trip/pages/speak_page.dart';
 import 'package:flutter_trip/widget/search_bar.dart';
 import 'package:flutter_trip/widget/webview.dart';
 
@@ -26,10 +27,9 @@ const TYPES = [
 class SearchPage extends StatefulWidget {
   final bool hideLeft;
   final String keyword;
-  final String hint;
 
   const SearchPage(
-      {Key? key, this.hideLeft = true, this.keyword = "", this.hint = ""})
+      {Key? key, this.hideLeft = true, this.keyword = ""})
       : super(key: key);
 
   @override
@@ -39,6 +39,14 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   String keyword = "";
   SearchModel? searchModel;
+
+  @override
+  void initState() {
+    if (widget.keyword.isNotEmpty) {
+      _onTextChange(widget.keyword);
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +94,7 @@ class _SearchPageState extends State<SearchPage> {
                 leftButtonClick: () {
                   Navigator.pop(context);
                 },
-                speakClick: () {},
+                speakClick: _jumpToSpeak,
                 rightButtonClick: () {},
                 inputBoxClick: () {},
                 onChanged: _onTextChange),
@@ -95,7 +103,11 @@ class _SearchPageState extends State<SearchPage> {
       ],
     );
   }
-
+  void _jumpToSpeak() {
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+      return const SpeakPage();
+    }));
+  }
   _item(int index) {
     if (searchModel == null || searchModel?.searchList == null) return null;
     SearchItem? item = searchModel?.searchList[index];
