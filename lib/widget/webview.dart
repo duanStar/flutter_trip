@@ -41,6 +41,7 @@ class _WebViewState extends State<WebView> {
         case WebViewState.startLoad:
           if (isToMain(state.url) && !exiting) {
             if (widget.backForbid) {
+              webviewReference.stopLoading();
               webviewReference.launch(widget.url);
             } else {
               Navigator.pop(context);
