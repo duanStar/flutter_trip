@@ -119,7 +119,6 @@ class _HomePageState extends State<HomePage> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter)),
           child: Container(
-            padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
             height: 80,
             decoration: BoxDecoration(
                 color:

@@ -54,7 +54,6 @@ class _TravelPageState extends State<TravelPage>
               children: [
                 Container(
                   color: Colors.white,
-                  padding: EdgeInsets.only(top: 30),
                   child: TabBar(
                     controller: _tabController,
                     isScrollable: true,
