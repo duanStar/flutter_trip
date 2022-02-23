@@ -3,6 +3,7 @@ import 'package:flutter_trip/dao/travel_dao.dart';
 import 'package:flutter_trip/model/travel_item.dart';
 import 'package:flutter_trip/model/travel_model.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_trip/util/navigator_util.dart';
 import 'package:flutter_trip/widget/loading_container.dart';
 import 'package:flutter_trip/widget/webview.dart';
 
@@ -29,7 +30,7 @@ class _TravelTabPageState extends State<TravelTabPage>
   loadData({loadMore = false}) async {
     if (loadMore) {
       pageIndex++;
-    }else{
+    } else {
       pageIndex = 1;
     }
     try {
@@ -57,7 +58,8 @@ class _TravelTabPageState extends State<TravelTabPage>
   @override
   void initState() {
     scrollController.addListener(() {
-      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
         loadData(loadMore: true);
       }
     });
@@ -66,28 +68,36 @@ class _TravelTabPageState extends State<TravelTabPage>
   }
 
   @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: LoadingContainer(child: RefreshIndicator(
-        child: MediaQuery.removePadding(
-          context: context,
-          child: MasonryGridView.count(
-            controller: scrollController,
-            crossAxisCount: 2,
-            mainAxisSpacing: 4,
-            crossAxisSpacing: 4,
-            itemCount: _items.length,
-            itemBuilder: (context, index) {
-              return _TravelItem(
-                index: index,
-                travelItem: _items[index],
-              );
-            },
+      body: LoadingContainer(
+          child: RefreshIndicator(
+            child: MediaQuery.removePadding(
+              context: context,
+              child: MasonryGridView.count(
+                controller: scrollController,
+                crossAxisCount: 2,
+                mainAxisSpacing: 4,
+                crossAxisSpacing: 4,
+                itemCount: _items.length,
+                itemBuilder: (context, index) {
+                  return _TravelItem(
+                    index: index,
+                    travelItem: _items[index],
+                  );
+                },
+              ),
+              removeTop: true,
+            ),
+            onRefresh: _onRefresh,
           ),
-          removeTop: true,
-        ),
-        onRefresh: _onRefresh,
-      ), isLoading: isLoading),
+          isLoading: isLoading),
     );
   }
 
@@ -127,12 +137,12 @@ class _TravelItem extends StatelessWidget {
       onTap: () {
         if (travelItem.article.urls != null &&
             travelItem.article.urls.length > 0) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return WebView(
-                url: travelItem.article.urls[0].h5Url,
-                title: "详情",
-                hideAppBar: false);
-          }));
+          NavigatorUtil.push(
+              context,
+              WebView(
+                  url: travelItem.article.urls[0].h5Url,
+                  title: "详情",
+                  hideAppBar: false));
         }
       },
       child: Card(

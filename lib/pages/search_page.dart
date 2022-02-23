@@ -5,6 +5,7 @@ import 'package:flutter_trip/dao/search_dao.dart';
 import 'package:flutter_trip/model/search_item.dart';
 import 'package:flutter_trip/model/search_model.dart';
 import 'package:flutter_trip/pages/speak_page.dart';
+import 'package:flutter_trip/util/navigator_util.dart';
 import 'package:flutter_trip/widget/search_bar.dart';
 import 'package:flutter_trip/widget/webview.dart';
 
@@ -28,8 +29,7 @@ class SearchPage extends StatefulWidget {
   final bool hideLeft;
   final String keyword;
 
-  const SearchPage(
-      {Key? key, this.hideLeft = true, this.keyword = ""})
+  const SearchPage({Key? key, this.hideLeft = true, this.keyword = ""})
       : super(key: key);
 
   @override
@@ -102,21 +102,19 @@ class _SearchPageState extends State<SearchPage> {
       ],
     );
   }
+
   void _jumpToSpeak() {
-    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-      return const SpeakPage();
-    }));
+    NavigatorUtil.push(context, const SpeakPage());
   }
+
   _item(int index) {
     if (searchModel == null || searchModel?.searchList == null) return null;
     SearchItem? item = searchModel?.searchList[index];
     return GestureDetector(
       onTap: () {
         if (item != null) {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (BuildContext context) {
-            return WebView(url: item.url, title: "详情", hideAppBar: false);
-          }));
+          NavigatorUtil.push(
+              context, WebView(url: item.url, title: "详情", hideAppBar: false));
         }
       },
       child: Container(

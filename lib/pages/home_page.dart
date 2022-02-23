@@ -7,6 +7,7 @@ import 'package:flutter_trip/model/home_model.dart';
 import 'package:flutter_trip/model/sales_box_model.dart';
 import 'package:flutter_trip/pages/search_page.dart';
 import 'package:flutter_trip/pages/speak_page.dart';
+import 'package:flutter_trip/util/navigator_util.dart';
 import 'package:flutter_trip/widget/grid_nav.dart';
 import 'package:flutter_trip/widget/loading_container.dart';
 import 'package:flutter_trip/widget/local_nav.dart';
@@ -181,13 +182,13 @@ class _HomePageState extends State<HomePage> {
           return GestureDetector(
             onTap: () {
               CommonModel model = bannerList[index];
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return WebView(
-                    url: model.url ?? "",
-                    title: model.title ?? "",
-                    hideAppBar: model.hideAppBar ?? false,
-                    statusBarColor: model.statusBarColor ?? "ffffff");
-              }));
+              NavigatorUtil.push(
+                  context,
+                  WebView(
+                      url: model.url ?? "",
+                      title: model.title ?? "",
+                      hideAppBar: model.hideAppBar ?? false,
+                      statusBarColor: model.statusBarColor ?? "ffffff"));
             },
             child: Image.network(
               bannerList[index].icon ?? "",
@@ -201,17 +202,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _jumpToSearch() {
-    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-      return const SearchPage(
-        keyword: SEARCH_BAR_DEFAULT_TEXT,
-        hideLeft: false,
-      );
-    }));
+    NavigatorUtil.push(
+        context,
+        const SearchPage(
+          keyword: SEARCH_BAR_DEFAULT_TEXT,
+          hideLeft: false,
+        ));
   }
 
   void _jumpToSpeak() {
-    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-      return const SpeakPage();
-    }));
+    NavigatorUtil.push(context, const SpeakPage());
   }
 }
